@@ -19,3 +19,6 @@ def products(request, id=None):
         'categories': ProductCategory.objects.all(),
     }
     return render(request, 'mainapp/products.html', context)
+
+
+
