@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib import auth
 from django.urls import reverse
 from basket.models import Basket
+from django.contrib.auth.decorators import login_required
 
 
 def login(request):
@@ -40,6 +41,7 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 
+@login_required # если не пользователь не авторизован, декоратор позвалет не заходить в контроллер
 def profile(request):
     if request.method == 'POST':
         form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
