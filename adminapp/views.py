@@ -4,17 +4,21 @@ from authapp.models import User
 from adminapp.forms import UserAdminRegisterForm, UserAdminProfileForm
 from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth.decorators import user_passes_test
 
 
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def index(request):
     return render(request, 'adminapp/index.html')
 
 
+@user_passes_test(lambda u: u.is_superuser)
 def admin_users_read(request):
     context = {'users': User.objects.all()}
     return render(request, 'adminapp/admin-users-read.html', context)
 
 
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def admin_users_create(request):
     if request.method == 'POST':
         form = UserAdminRegisterForm(data=request.POST, files=request.FILES)
@@ -28,6 +32,7 @@ def admin_users_create(request):
     return render(request, 'adminapp/admin-users-create.html', context)
 
 
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def admin_users_update(request, id):
     current_user = User.objects.get(id=id)
     if request.method == 'POST':
@@ -44,6 +49,7 @@ def admin_users_update(request, id):
     return render(request, 'adminapp/admin-users-update-delete.html', context)
 
 
+@user_passes_test(lambda u: u.is_superuser, login_url='/')
 def admin_users_delete(request, id):
     user = User.objects.get(id=id)
     user.is_active = False
