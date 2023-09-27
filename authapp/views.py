@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render, HttpResponseRedirect
 from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
 from django.contrib import messages
@@ -5,6 +6,19 @@ from django.contrib import auth
 from django.urls import reverse
 from basket.models import Basket
 from django.contrib.auth.decorators import login_required
+from .models import User
+from .utils import send_verify_email
+
+
+def verify(request, user_id, hash):
+    user = User.objects.get(pk=user_id)
+    if user.activation_key == hash and not user.is_activation_key_expired():
+        user.is_active = True
+        user.activation_key = None
+        user.save()
+        auth.login(request, user)
+        return HttpResponseRedirect(reverse('index'))
+    raise Http404('')
 
 
 def login(request):
@@ -27,8 +41,9 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(data=request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Вы успешно зарегестрированы!')
+            user = form.save()
+            send_verify_email(user)
+            messages.success(request, 'Для активации аккаунта подтвердите регистрацию по почте!')
             return HttpResponseRedirect(reverse('auth:login'))
     else:
         form = UserRegisterForm()
@@ -41,7 +56,7 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 
-@login_required # если не пользователь не авторизован, декоратор позвалет не заходить в контроллер
+@login_required  # если не пользователь не авторизован, декоратор позвалет не заходить в контроллер
 def profile(request):
     if request.method == 'POST':
         form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)

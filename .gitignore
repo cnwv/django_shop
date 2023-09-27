@@ -3,3 +3,4 @@ __pycahhe__/
 db.sqlite3
 .DS_Store
 
+/.env
