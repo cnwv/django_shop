@@ -1,0 +1,54 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+
+    <div class="container" style="padding-top: 56px">
+
+        <div class="row">
+            <div class="col-lg-9">
+                <h3 class="my-5">Заказы пользователя {{ user.first_name }}</h3>
+                <div class="col-8">
+                    <table class="table table-striped">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Статус</th>
+                            <th scope="col">Ссылка</th>
+                            <th scope="col">Удалить</th>
+                            <th scope="col">Обновить</th>
+
+                        </tr>
+
+                        {% for item in object_list %}
+                            {% if item.is_active %}
+                                <tr>
+                                    <th scope="row">{{ item.id }}</th>
+                                    <td>{{ item.get_status_display }}</td>
+                                    <td><a href="{% url 'orders:order_detail' item.id %}">ссылка</a></td>
+                                    <td><a href="{% url 'orders:order_delete' item.id %}">удалить</a></td>
+                                    <td><a href="{% url 'orders:order_update' item.id %}">Обновить</a></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+
+                </div>
+                <br>
+                <div>
+                    <a href="{% url 'orders:order_create' %}">
+                        <button type="button" class="btn btn-primary">Создать заказ</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    <footer class="py-5 bg-dark fixed-bottom">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; GeekShop 2020</p>
+        </div>
+        <!-- /.container -->
+    </footer>
+{% endblock %}

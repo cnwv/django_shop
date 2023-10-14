@@ -7,7 +7,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-
 def add_user_profiles(self, *args, **options):
     users = User.objects.all()
     for user in users:

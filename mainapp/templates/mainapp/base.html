@@ -12,7 +12,7 @@
 
     <title>
         {% block title %}
-        {{ title|title }}
+            {{ title|title }}
         {% endblock %}
     </title>
 
@@ -43,7 +43,8 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'authapp:profile' %}">{{ user.username }}<i class="fas fa-user-circle"></i></a>
+                        <a class="nav-link" href="{% url 'authapp:profile' %}">{{ user.username }}<i
+                                class="fas fa-user-circle"></i></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'auth:logout' %}">Выйти <i class="fas fa-sign-out-alt"></i></a>
@@ -51,6 +52,9 @@
                     {% if user.is_superuser or user.is_staff %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'admins:index' %}"><i class="fas fa-users"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'orders:order_list' %}"><i class="fas fa-eye"></i></a>
                         </li>
                     {% endif %}
                 {% else %}
