@@ -106,3 +106,4 @@ class UserDeleteView(DeleteView):
 #     user.is_active = False
 #     user.save()
 #     return HttpResponseRedirect(reverse('admins:admin_users_read'))
+

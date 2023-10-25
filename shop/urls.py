@@ -28,8 +28,9 @@ urlpatterns = [
     path('baskets/', include('basket.urls', namespace='baskets')),
     path('admin-staff/', include('adminapp.urls', namespace='admins')),
     path('', include('social_django.urls', namespace='social')),
-    path('order/', include('ordersapp.urls', namespace='orders'))
+    path('order/', include('ordersapp.urls', namespace='orders')),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]

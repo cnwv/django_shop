@@ -7,3 +7,6 @@ db.sqlite3
 /media/users_avatar/IMG_6593.jpeg
 /media/users_avatar/IMG_7169.jpeg
 /ssl/
+urls.txt
+requirements.dev.txt
+test.py

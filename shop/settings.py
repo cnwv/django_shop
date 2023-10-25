@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'adminapp',
     'social_django',
     'ordersapp',
+
 ]
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar', 'django_extensions']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,8 +55,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware'
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
+
+if DEBUG:
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware", ]
 
 ROOT_URLCONF = 'shop.urls'
 
@@ -168,3 +174,5 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+if DEBUG:
+    INTERNAL_IPS = ["127.0.0.1"]
