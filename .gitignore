@@ -10,3 +10,4 @@ db.sqlite3
 urls.txt
 requirements.dev.txt
 test.py
+/.vscode/

@@ -42,8 +42,10 @@ def register(request):
         if form.is_valid():
             user = form.save()
             if send_verify_email(user):
+                print(1)
                 return HttpResponseRedirect(reverse('auth:login'))
             else:
+                print(2)
                 return HttpResponseRedirect(reverse('auth:login'))
     else:
         form = UserRegisterForm()
@@ -56,7 +58,7 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 
-@login_required  # если не пользователь не авторизован, декоратор позвалет не заходить в контроллер
+@login_required 
 def profile(request):
     if request.method == 'POST':
         form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
