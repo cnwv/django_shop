@@ -3,6 +3,7 @@ from authapp.models import User
 from mainapp.models import Product
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
+from django.utils.functional import cached_property
 
 
 class BasketQuerySet(models.QuerySet):
@@ -33,12 +34,16 @@ class Basket(models.Model):
     def sum(self):
         return self.quantity * self.product.price
 
+    @cached_property
+    def get_items_cached(self):
+        return Basket.objects.filter(user=self.user)
+
     def total_quantity(self):
-        baskets = Basket.objects.filter(user=self.user)
+        baskets = self.get_items_cached
         return sum(basket.quantity for basket in baskets)
 
     def total_sum(self):
-        baskets = Basket.objects.filter(user=self.user)
+        baskets = self.get_items_cached
         return sum(basket.sum() for basket in baskets)
 
     def delete(self, using=None, keep_parents=False):
